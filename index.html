@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clyde - Flow Effect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@0,400;1,700&display=swap');
+      
+      /* Placeholder for the custom Griffiths font */
+      @font-face {
+        font-family: 'Griffiths';
+        src: url('/fonts/Griffiths.woff2') format('woff2'); /* User to ensure this file exists */
+        font-weight: normal;
+        font-style: italic;
+        font-display: swap;
+      }
+
+      :root {
+        --background: 0 0% 0%;
+        --foreground: 0 0% 100%;
+        --card: 0 0% 3%;
+        --card-foreground: 0 0% 100%;
+        --popover: 0 0% 3%;
+        --popover-foreground: 0 0% 100%;
+        --primary: 0 0% 98%;
+        --primary-foreground: 0 0% 9%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 0% 83.1%;
+        --radius: 0.5rem;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+        overflow-x: hidden;
+      }
+
+      .font-serif {
+        font-family: 'Playfair Display', serif;
+      }
+
+      .font-cormorant {
+        font-family: 'Cormorant Garamond', serif;
+      }
+
+      .font-griffiths {
+        font-family: 'Griffiths', 'Cormorant Garamond', serif;
+      }
+      
+      /* Hide scrollbar for cleaner cinematic look */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 4px;
+      }
+
+      /* Radial Orbital Timeline Styles */
+      
+      /* Animation for the pulsing effect */
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Animation for the ping effect */
+      @keyframes ping {
+        75%, 100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+
+      /* Custom animations for the orbital timeline */
+      .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      .animate-ping {
+        animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+
+      /* Transitions */
+      .transition-all {
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .duration-300 {
+        transition-duration: 300ms;
+      }
+
+      .duration-700 {
+        transition-duration: 700ms;
+      }
+
+      .duration-1000 {
+        transition-duration: 1000ms;
+      }
+
+      /* Backdrop blur */
+      .backdrop-blur-lg {
+        backdrop-filter: blur(16px);
+      }
+
+      /* Custom gradients */
+      .bg-gradient-orbital {
+        background: linear-gradient(to bottom right, #6366f1, #3b82f6, #14b8a6);
+      }
+
+      /* Z-index utilities */
+      .z-10 {
+        z-index: 10;
+      }
+
+      .z-50 {
+        z-index: 50;
+      }
+
+      /* Custom shadows */
+      .shadow-orbital {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+      }
+
+      /* Custom transforms */
+      .scale-125 {
+        transform: scale(1.25);
+      }
+
+      .scale-150 {
+        transform: scale(1.5);
+      }
+
+      /* Custom opacity values */
+      .opacity-70 {
+        opacity: 0.7;
+      }
+
+      .opacity-50 {
+        opacity: 0.5;
+      }
+
+      /* Custom border opacity */
+      .border-white\/10 {
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .border-white\/20 {
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .border-white\/30 {
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .border-white\/40 {
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      /* Custom background opacity */
+      .bg-black\/90 {
+        background-color: rgba(0, 0, 0, 0.9);
+      }
+
+      .bg-white\/50 {
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .bg-white\/80 {
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* Custom text opacity */
+      .text-white\/70 {
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .text-white\/80 {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom": "https://esm.sh/react-dom@18.3.1/",
+    "react-dom/": "https://esm.sh/react-dom@18.3.1/",
+    "react": "https://esm.sh/react@18.3.1",
+    "react/": "https://esm.sh/react@18.3.1/",
+    "lucide-react": "https://esm.sh/lucide-react@0.344.0?external=react,react-dom",
+    "clsx": "https://esm.sh/clsx",
+    "tailwind-merge": "https://esm.sh/tailwind-merge",
+    "class-variance-authority": "https://esm.sh/class-variance-authority",
+    "@radix-ui/react-slot": "https://esm.sh/@radix-ui/react-slot?external=react,react-dom",
+    "framer-motion": "https://esm.sh/framer-motion@10.16.4?external=react,react-dom",
+    "qss": "https://esm.sh/qss",
+    "@radix-ui/react-hover-card": "https://esm.sh/@radix-ui/react-hover-card@1.0.7?external=react,react-dom"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>

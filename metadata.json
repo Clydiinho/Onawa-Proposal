@@ -1,0 +1,5 @@
+{
+  "name": "Clyde Flow Hero",
+  "description": "A high-performance, GPU-accelerated scroll-driven blur-to-focus typography effect inspired by Google Flow's cinematic web design.",
+  "requestFramePermissions": []
+}
